@@ -37,7 +37,7 @@ export function StoreManager() {
     try {
       const data = await fetcher();
       save(data, transformArticlesForStorage);
-      onEvent?.('ready');
+      onEvent?.('success');
     } catch {
       onEvent?.('error');
     }
