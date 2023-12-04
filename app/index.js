@@ -7,11 +7,12 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useArticles} from './hooks/useArticles';
 
 import BackgroundFetch from 'react-native-background-fetch';
+
 import {store} from './services/Store';
 import {fetchNewsArticles} from './apis/fetchNewsArticles';
+import {useArticles} from './hooks/useArticles';
 
 const App = () => {
   const {articles, isLoading, isError} = useArticles();
