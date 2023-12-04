@@ -11,13 +11,16 @@ import {
 
 import SwipeableFlatList from 'react-native-swipeable-list';
 
-import {useArticles} from '../../hooks/useArticles';
 import {ArticleListItem} from '../../components/ArticleListItem';
 import {Header} from '../../components/Header';
+import {useArticles} from '../../hooks/useArticles';
+import Theme from '../../Theme';
 
 const refreshIcon = require('../../assets/icons/refresh/refresh.png');
 const deleteIcon = require('../../assets/icons/delete/delete.png');
 const pinIcon = require('../../assets/icons/pin/pin.png');
+
+const color = Theme.color;
 
 const Home = () => {
   const {articles, isLoading, isError, manualFetch, deleteArticle, pinArticle} =
@@ -78,6 +81,7 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: color.bg.primary,
   },
   listContainer: {
     padding: 20,
@@ -88,11 +92,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorContainer: {
-    backgroundColor: '#F88379',
+    backgroundColor: color.bg.error,
     paddingVertical: 4,
   },
   errorText: {
-    color: 'white',
+    color: color.text.error,
     textAlign: 'center',
   },
   spacer: {

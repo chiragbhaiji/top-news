@@ -1,16 +1,9 @@
-import React from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  Text,
-  StyleSheet,
-  Appearance,
-} from 'react-native';
-
 import PropTypes from 'prop-types';
+import React from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Theme from '../../Theme';
 
-const colorScheme = Appearance.getColorScheme();
+const color = Theme.color;
 
 export const Header = ({title, left, right}) => {
   return (
@@ -56,6 +49,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 3,
+    color: color.text.primary,
   },
   actionContainer: {
     flex: 1,
@@ -68,7 +62,7 @@ const styles = StyleSheet.create({
   img: {
     aspectRatio: 1,
     height: 30,
-    tintColor: colorScheme === 'dark' ? 'white' : 'black',
+    tintColor: color.icon.primary,
   },
 });
 

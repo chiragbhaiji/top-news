@@ -1,5 +1,8 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
+import Theme from '../../Theme';
+
+const color = Theme.color;
 
 const placeholderImgSource = require('../../assets/images/placeholder.png');
 const pinImgSource = require('../../assets/icons/pin/pin.png');
@@ -34,13 +37,13 @@ export const ArticleListItem = ({data}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderColor: '#444',
+    borderColor: color.border,
     borderWidth: 1,
     borderRightWidth: 3,
     borderBottomWidth: 3,
     borderRadius: 10,
     overflow: 'hidden',
-    backgroundColor: 'white',
+    backgroundColor: color.bg.secondary,
   },
   img: {
     width: 120,
@@ -64,14 +67,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     fontWeight: '600',
+    color: color.text.primary,
   },
   author: {
     fontSize: 11,
-    color: 'gray',
+    color: color.text.secondary,
   },
   date: {
     marginVertical: 8,
     fontSize: 11,
-    color: 'gray',
+    color: color.text.secondary,
   },
 });
