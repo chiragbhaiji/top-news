@@ -1,14 +1,16 @@
 import React from 'react';
 import {
   View,
-  ImageURISource,
   TouchableOpacity,
   Image,
   Text,
   StyleSheet,
+  Appearance,
 } from 'react-native';
 
 import PropTypes from 'prop-types';
+
+const colorScheme = Appearance.getColorScheme();
 
 export const Header = ({title, left, right}) => {
   return (
@@ -66,6 +68,7 @@ const styles = StyleSheet.create({
   img: {
     aspectRatio: 1,
     height: 30,
+    tintColor: colorScheme === 'dark' ? 'white' : 'black',
   },
 });
 

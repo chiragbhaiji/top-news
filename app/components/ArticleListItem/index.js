@@ -24,9 +24,8 @@ export const ArticleListItem = ({data}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flexDirection: 'row',
-    borderColor: '#555',
+    borderColor: '#444',
     borderWidth: 1,
     borderRightWidth: 3,
     borderBottomWidth: 3,
