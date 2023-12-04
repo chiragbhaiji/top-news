@@ -38,7 +38,7 @@ export const useArticles = (
 
   function onStoreEvent(event) {
     const loadInitialData = () => {
-      timer.start();
+      // timer.start();
       setIsLoading(false);
       const {value} = articlesGenerator.next();
       setArticles(value);
