@@ -14,9 +14,12 @@ import {store} from '../../services/Store';
 import {fetchNewsArticles} from '../../apis/fetchNewsArticles';
 import {useArticles} from '../../hooks/useArticles';
 import {ArticleListItem} from '../../components/ArticleListItem';
+import {Header} from '../../components/Header';
+
+const refreshIcon = require('../../assets/icons/refresh/refresh.png');
 
 const Home = () => {
-  const {articles, isLoading, isError} = useArticles();
+  const {articles, isLoading, isError, manualFetch} = useArticles();
 
   useEffect(() => {
     initBackgroundFetch();
@@ -52,6 +55,10 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header
+        title="Headlines"
+        right={{iconSource: refreshIcon, action: manualFetch}}
+      />
       {isError && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>

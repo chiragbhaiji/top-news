@@ -32,6 +32,11 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>newsapi.org</key>
+			<dict>
+            	<key>NSIncludesSubdomains</key>
+            	<true/>
+        	</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>

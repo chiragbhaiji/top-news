@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 import {useTimer} from './useTimer';
 import {DisplayManager} from '../services/DisplayManager';
@@ -20,10 +20,14 @@ export const useArticles = (
     numberOfSecondsToLoadNewArticles,
   );
 
-  let articlesGenerator = displayManager.generateArticles({
-    initialCount,
-    updateCount,
-  });
+  let articlesGenerator = useMemo(
+    () =>
+      displayManager.generateArticles({
+        initialCount,
+        updateCount,
+      }),
+    [initialCount, updateCount],
+  );
 
   useEffect(() => {
     displayManager.init(onStoreEvent);
@@ -71,5 +75,13 @@ export const useArticles = (
     }
   }
 
-  return {articles, isLoading, isError};
+  function manualFetch() {
+    timer.stop();
+    introduceNewArticles();
+    setTimeout(() => {
+      timer.start();
+    }, 0);
+  }
+
+  return {articles, isLoading, isError, manualFetch};
 };
