@@ -1,62 +1,48 @@
-import {useState, useEffect, useRef} from 'react';
+import {useEffect, useState} from 'react';
 
-import {createSyncManager} from '../services/Store';
-import {popTopArticles} from '../utils';
 import {useTimer} from './useTimer';
+import {StoreManager} from '../services/StoreManager';
+import {DisplayManager} from '../services/DisplayManager';
 
-export const useArticles = () => {
-  const allArticles = useRef([]);
+export const useArticles = (initialCount = 10, updateCount = 5) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [articles, setArticles] = useState([]);
 
-  const {sync} = createSyncManager(handleSyncEvent);
-  const {start, stop} = useTimer(introduceNewRandomArticles);
+  const {start, stop} = useTimer(populateArticles);
+
+  const storeManager = new StoreManager();
+  const {isReady, generateArticles} = new DisplayManager(
+    storeManager,
+    handleStoreUpdate,
+  );
+  const articlesGenerator = generateArticles({initialCount, updateCount});
 
   useEffect(() => {
-    sync();
-  }, []);
-
-  function handleSyncEvent({event, data, error}) {
-    if (error) {
-      return;
+    if (isReady) {
+      loadInitialData();
     }
-    loadData(data);
-  }
+  }, [isReady]);
 
-  const loadData = data => {
-    allArticles.current = data;
-
-    const {top, remaining} = popTopArticles({
-      count: 10,
-      from: allArticles.current,
-    });
-    // Update the remaining articles
-    allArticles.current = remaining;
-    // Add the top articles to the current list.
-    setArticles(currentArticles => [...top, ...currentArticles]);
-    // start the timer to introduce new articles periodically.
+  const loadInitialData = () => {
     start();
+    setIsLoading(false);
+    populateArticles();
   };
 
-  function introduceNewRandomArticles() {
-    const {top, remaining} = popTopArticles({
-      count: 5,
-      from: allArticles.current,
-      shouldRandomize: true,
-    });
-    // Update the remaining articles
-    allArticles.current = remaining;
-    // Add the top articles to the current list.
-    setArticles(currentArticles => [...top, ...currentArticles]);
-    // Stop the timer in case all the articles are exhausted
-    if (allArticles.current.length === 0) {
-      resetAndLoadNextBatch();
+  function handleStoreUpdate(event) {
+    if (event === 'ready') {
+      loadInitialData();
     }
   }
 
-  const resetAndLoadNextBatch = async () => {
-    stop();
-    sync();
-  };
+  function populateArticles() {
+    const {value} = articlesGenerator.next();
+    if (value) {
+      setArticles(currentArticles => [...value, ...currentArticles]);
+    } else {
+      stop();
+    }
+  }
 
-  return {articles};
+  return {articles, isLoading};
 };

@@ -1,18 +1,4 @@
-export const popTopArticles = ({from, count, shouldRandomize = false}) => {
-  const copy = [...from];
-  let topArticles = copy.splice(0, count);
-
-  if (shouldRandomize) {
-    randomize(topArticles);
-  }
-
-  return {
-    top: topArticles,
-    remaining: copy,
-  };
-};
-
-const randomize = array => {
+export const randomize = array => {
   let currentIndex = array.length;
   let randomIndex;
 
