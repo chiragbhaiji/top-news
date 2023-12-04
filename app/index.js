@@ -53,10 +53,9 @@ const App = () => {
     <SafeAreaView style={styles.container}>
       {isError && (
         <View style={styles.errorContainer}>
-          <Text
-            style={
-              styles.errorText
-            }>{`Something went wrong!\nUnable to fetch latest news`}</Text>
+          <Text style={styles.errorText}>
+            {'Something went wrong!\nUnable to fetch latest news'}
+          </Text>
         </View>
       )}
       <FlatList

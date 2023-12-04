@@ -4,25 +4,30 @@ import {useTimer} from './useTimer';
 import {DisplayManager} from '../services/DisplayManager';
 import {store} from '../services/Store';
 
-export const useArticles = (initialCount = 10, updateCount = 5) => {
+const displayManager = new DisplayManager(store);
+
+export const useArticles = (
+  initialCount = 10,
+  updateCount = 5,
+  numberOfSecondsToLoadNewArticles = 10000,
+) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [articles, setArticles] = useState([]);
 
-  const timer = useTimer(populateArticles, 1000);
-
-  const {isReady, generateArticles, loadNextBatch} = new DisplayManager(
-    store,
-    handleStoreUpdate,
+  const timer = useTimer(
+    introduceNewArticles,
+    numberOfSecondsToLoadNewArticles,
   );
 
-  let articlesGenerator = generateArticles({initialCount, updateCount});
+  let articlesGenerator = displayManager.generateArticles({
+    initialCount,
+    updateCount,
+  });
 
   useEffect(() => {
-    if (isReady) {
-      loadInitialData();
-    }
-  }, [isReady]);
+    displayManager.init(onStoreEvent);
+  }, []);
 
   useEffect(() => {
     if (isError) {
@@ -31,36 +36,38 @@ export const useArticles = (initialCount = 10, updateCount = 5) => {
     }
   }, [isError]);
 
-  const loadInitialData = () => {
-    timer.start();
-    setIsLoading(false);
-    // reset the current articles
-    setArticles([]);
-    populateArticles();
-  };
+  function onStoreEvent(event) {
+    const loadInitialData = () => {
+      timer.start();
+      setIsLoading(false);
+      const {value} = articlesGenerator.next();
+      setArticles(value);
+    };
 
-  function handleStoreUpdate(event) {
     if (event === 'ready') {
       loadInitialData();
     }
+
     if (event === 'reset') {
       // Initialize the new generator function to handle next page data;
-      articlesGenerator = generateArticles({initialCount, updateCount});
+      articlesGenerator = displayManager.generateArticles({
+        initialCount,
+        updateCount,
+      });
       loadInitialData();
     }
+
     setIsError(event === 'error');
   }
 
-  function populateArticles() {
+  function introduceNewArticles() {
     const {value} = articlesGenerator.next();
     if (value) {
       setArticles(currentArticles => [...value, ...currentArticles]);
     } else {
       timer.stop();
       setIsLoading(true);
-      if (!isError) {
-        loadNextBatch();
-      }
+      displayManager.loadNextBatch();
     }
   }
 

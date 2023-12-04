@@ -1,10 +1,14 @@
 import {fetchNewsArticles} from '../../apis/fetchNewsArticles';
 import {randomize} from '../../utils';
 
-export function DisplayManager(store, onEvent) {
+export function DisplayManager(store) {
   let page = 0;
+  let onEvent;
 
-  const isReady = store.get().length > 0;
+  function init(_onEvent) {
+    onEvent = _onEvent;
+    loadBatch(true);
+  }
 
   function* generateArticles({initialCount, updateCount}) {
     const articlesFromStore = store.get();
@@ -20,21 +24,22 @@ export function DisplayManager(store, onEvent) {
   }
 
   function loadBatch(isFirst = false) {
-    // sync the store for next batch that ie next page
-    store.sync(fetchNewsArticles(page + 1), event => {
-      if (event === 'success') {
-        page = page + 1;
-        onEvent(isFirst ? 'ready' : 'reset');
-      } else {
-        onEvent(event);
-      }
-    });
+    if (isFirst && store.get().length) {
+      setTimeout(() => {
+        onEvent?.('ready');
+      }, 1000);
+    } else {
+      // sync the store for next batch that ie next page
+      store.sync(fetchNewsArticles(page + 1), event => {
+        if (event === 'success') {
+          page = page + 1;
+          onEvent?.('reset');
+        } else {
+          onEvent?.(event);
+        }
+      });
+    }
   }
 
-  if (!isReady) {
-    // Need to sync store with the server first
-    loadBatch(true);
-  }
-
-  return {isReady, generateArticles, loadNextBatch: loadBatch};
+  return {generateArticles, loadNextBatch: loadBatch, init};
 }
