@@ -18,7 +18,8 @@
     "react-native-background-fetch": "^4.2.1",
     "react-native-config": "^1.5.1",
     "react-native-mmkv": "^2.11.0",
-    "react-native-splash-screen": "^3.3.0"
+    "react-native-splash-screen": "^3.3.0",
+    "react-native-swipeable-list": "^0.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
