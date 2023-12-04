@@ -1,7 +1,7 @@
 import {newsAPI} from './index';
 
 export const fetchNewsArticles =
-  page =>
+  (page = 1) =>
   async (
     params = {
       page,

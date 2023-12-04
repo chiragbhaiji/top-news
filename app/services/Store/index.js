@@ -2,7 +2,7 @@ import {MMKV} from 'react-native-mmkv';
 
 import {StoreKey, transformArticlesForStorage} from './utils';
 
-export function StoreManager() {
+function Store() {
   const store = new MMKV();
 
   const getLastSyncedTimestamp = () => {
@@ -51,3 +51,5 @@ export function StoreManager() {
     getLastSyncedTimestamp,
   };
 }
+
+export const store = new Store();

@@ -1,18 +1,17 @@
 import {useEffect, useState} from 'react';
 
 import {useTimer} from './useTimer';
-import {StoreManager} from '../services/StoreManager';
 import {DisplayManager} from '../services/DisplayManager';
+import {store} from '../services/Store';
 
 export const useArticles = (initialCount = 10, updateCount = 5) => {
   const [isLoading, setIsLoading] = useState(true);
   const [articles, setArticles] = useState([]);
 
-  const timer = useTimer(populateArticles);
+  const timer = useTimer(populateArticles, 1000);
 
-  const storeManager = new StoreManager();
   const {isReady, generateArticles, loadNextBatch} = new DisplayManager(
-    storeManager,
+    store,
     handleStoreUpdate,
   );
 
@@ -40,6 +39,9 @@ export const useArticles = (initialCount = 10, updateCount = 5) => {
       // Initialize the new generator function to handle next page data;
       articlesGenerator = generateArticles({initialCount, updateCount});
       loadInitialData();
+    }
+    if (event === 'error') {
+      setIsLoading(false);
     }
   }
 

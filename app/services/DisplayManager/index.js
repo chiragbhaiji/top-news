@@ -25,6 +25,8 @@ export function DisplayManager(store, onEvent) {
       if (event === 'success') {
         page = page + 1;
         onEvent(isFirst ? 'ready' : 'reset');
+      } else {
+        onEvent(event);
       }
     });
   }
