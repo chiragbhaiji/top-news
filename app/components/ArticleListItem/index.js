@@ -1,6 +1,8 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 
+const placeholderImgSource = require('../../assets/images/placeholder.png');
+
 export const ArticleListItem = ({data}) => {
   const {title, publishedAt, author, urlToImage} = data;
 
@@ -8,9 +10,13 @@ export const ArticleListItem = ({data}) => {
 
   return (
     <View style={styles.container}>
-      <Image source={{uri: urlToImage}} style={styles.img} />
+      <Image
+        defaultSource={placeholderImgSource}
+        source={urlToImage ? {uri: urlToImage} : placeholderImgSource}
+        style={styles.img}
+      />
       <View style={styles.contentContainer}>
-        <Text numberOfLines={2} style={styles.title}>
+        <Text numberOfLines={3} style={styles.title}>
           {title}
         </Text>
         <Text style={styles.date}>{dateForDisplay.toDateString()}</Text>
@@ -48,11 +54,10 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 11,
     color: 'gray',
-    fontStyle: 'italic',
     textAlign: 'right',
   },
   date: {
-    marginVertical: 4,
+    marginVertical: 8,
     fontSize: 11,
     color: 'gray',
   },
