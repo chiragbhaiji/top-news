@@ -11,7 +11,9 @@ export function DisplayManager(store) {
   }
 
   function* generateArticles({initialCount, updateCount}) {
-    const articlesFromStore = store.get();
+    const articlesFromStore = store
+      .get()
+      .map(article => ({isPinned: false, ...article}));
 
     yield articlesFromStore.splice(0, initialCount);
 

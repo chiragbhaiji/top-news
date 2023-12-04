@@ -88,5 +88,20 @@ export const useArticles = (
     setArticles(articlesAfterDeletion);
   }
 
-  return {articles, isLoading, isError, manualFetch, deleteArticle};
+  function pinArticle(_id) {
+    const articlesAfterPinning = articles.map(article => ({
+      ...article,
+      isPinned: article.id === _id ? !article.isPinned : article.isPinned,
+    }));
+
+    articlesAfterPinning.sort((a, b) => {
+      if (a.isPinned && b.isPinned) return 0;
+      if (a.isPinned) return -1;
+      if (b.isPinned) return 1;
+    });
+
+    setArticles(articlesAfterPinning);
+  }
+
+  return {articles, isLoading, isError, manualFetch, deleteArticle, pinArticle};
 };

@@ -20,7 +20,7 @@ const deleteIcon = require('../../assets/icons/delete/delete.png');
 const pinIcon = require('../../assets/icons/pin/pin.png');
 
 const Home = () => {
-  const {articles, isLoading, isError, manualFetch, deleteArticle} =
+  const {articles, isLoading, isError, manualFetch, deleteArticle, pinArticle} =
     useArticles();
 
   const QuickActions = ({id}) => {
@@ -31,7 +31,9 @@ const Home = () => {
           onPress={() => deleteArticle(id)}>
           <Image style={styles.actionIconImg} source={deleteIcon} />
         </Pressable>
-        <Pressable style={styles.actionContainer} onPress={() => alert('here')}>
+        <Pressable
+          style={styles.actionContainer}
+          onPress={() => pinArticle(id)}>
           <Image style={styles.actionIconImg} source={pinIcon} />
         </Pressable>
       </View>

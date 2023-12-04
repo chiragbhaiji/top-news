@@ -2,9 +2,10 @@ import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 
 const placeholderImgSource = require('../../assets/images/placeholder.png');
+const pinImgSource = require('../../assets/icons/pin/pin.png');
 
 export const ArticleListItem = ({data}) => {
-  const {title, publishedAt, author, urlToImage} = data;
+  const {title, publishedAt, author, urlToImage, isPinned} = data;
 
   const dateForDisplay = new Date(publishedAt);
 
@@ -19,9 +20,12 @@ export const ArticleListItem = ({data}) => {
           {title}
         </Text>
         <Text style={styles.date}>{dateForDisplay.toDateString()}</Text>
-        <Text numberOfLines={1} style={styles.author}>
-          by {author}
-        </Text>
+        <View style={styles.footer}>
+          <Text numberOfLines={1} style={styles.author}>
+            {`by: ${author}`}
+          </Text>
+          {isPinned && <Image source={pinImgSource} style={styles.pinImg} />}
+        </View>
       </View>
     </View>
   );
@@ -42,6 +46,15 @@ const styles = StyleSheet.create({
     width: 120,
     borderRadius: 8,
   },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  pinImg: {
+    height: 8,
+    aspectRatio: 1,
+  },
   contentContainer: {
     flex: 1,
     justifyContent: 'space-between',
@@ -54,7 +67,6 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 11,
     color: 'gray',
-    textAlign: 'right',
   },
   date: {
     marginVertical: 8,
