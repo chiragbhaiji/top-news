@@ -9,4 +9,4 @@ const newsAPI = axios.create({
 
 newsAPI.defaults.headers.common['X-Api-Key'] = NEWS_API_KEY;
 
-export default newsAPI;
+export {newsAPI};
