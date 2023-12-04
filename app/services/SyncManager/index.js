@@ -2,15 +2,11 @@ export function SyncManager(store, fetcher) {
   async function getData() {
     const data = store.getArticles();
 
-    if (
-      data === undefined ||
-      data === null ||
-      (Array.isArray(data) && data.length === 0)
-    ) {
-      return await fetchAndStore();
+    if (Array.isArray(data) && data.length > 0) {
+      return data;
     }
 
-    return data;
+    return await fetchAndStore();
   }
 
   async function fetchAndStore(page = 1) {

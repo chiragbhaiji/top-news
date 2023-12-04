@@ -1,6 +1,6 @@
 const {fetchNewsArticles} = require('../../apis/fetchNewsArticles');
-import {transformArticlesForStorage} from '../StorageManager/utils';
-const {createMMKVStore} = require('../StorageManager');
+import {transformArticlesForStorage} from '../Store/utils';
+const {createMMKVStore} = require('../Store');
 const {SyncManager} = require('../SyncManager');
 
 export function DisplayManager() {

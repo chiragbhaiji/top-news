@@ -11,6 +11,7 @@ export const useArticles = () => {
     const loadAllArticles = async () => {
       const displayManager = new DisplayManager();
       const data = await displayManager.getData();
+
       allArticles.current = data;
 
       const {top, remaining} = popTopArticles({
