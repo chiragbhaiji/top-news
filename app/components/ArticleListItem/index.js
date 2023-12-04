@@ -11,7 +11,6 @@ export const ArticleListItem = ({data}) => {
   return (
     <View style={styles.container}>
       <Image
-        defaultSource={placeholderImgSource}
         source={urlToImage ? {uri: urlToImage} : placeholderImgSource}
         style={styles.img}
       />
