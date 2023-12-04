@@ -1,79 +1,61 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# TopNews | React Native Mobile App
 
-# Getting Started
+### About
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+A dynamic news app that fetches the top 100 headlines, stores them for offline access and provides an interactive list view for a seamless user experience.
 
-## Step 1: Start the Metro Server
+### Prerequisite
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+[React Native Development Environment Setup](https://reactnative.dev/docs/environment-setup)
 
-To start Metro, run the following command from the _root_ of your React Native project:
+### Project Setup
 
-```bash
-# using npm
-npm start
+- Clone the repository
+- Install dependencies using `yarn install`
 
-# OR using Yarn
-yarn start
-```
+> Running on iOS [Minimum iOS version supported: 12.4]
 
-## Step 2: Start your Application
+- Run `npx pod-install`
+- Run `yarn ios`
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+> Running on Android [Minimum Android version supported: Android 5.0 (API level 21)]
 
-### For Android
+- Run `yarn android`
 
-```bash
-# using npm
-npm run android
+### Assumptions
 
-# OR using Yarn
-yarn android
-```
+- Consistent Internet Connection: Users have a stable Internet connection during the initial fetch of headlines.
+- Handling Exhaustion: On exhausting the current batch of headlines, the app overwrites the old batch with the new one.
+- Deletion/Pinning: Deletion and pinning of headlines currently occur in-memory only, offline storage is not updated.
 
-### For iOS
+### Known Issues
 
-```bash
-# using npm
-npm run ios
+- Unpinning a headline does not auto-close the swipe actions.
+- Action icons on headlines appear blurred.
+- The splash screen does not show the intended background colour on Android.
 
-# OR using Yarn
-yarn ios
-```
+### Improvements
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+- Implement caching of images using [react-native-fast-image](https://www.npmjs.com/package/react-native-fast-image).
+- Use SVG icons for better quality.
+- Explore better libraries or utilise [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/) library to implement swipe to action feature.
+- Implement error boundary.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+### Features covered
 
-## Step 3: Modifying your App
+- Fetches and stores top news headlines from an external API. It also runs in the background at intervals of the day.
+- Displays a dynamic list of headlines with periodic updates.
+- The user can fetch the new batch manually, which resets the timer.
+- User interaction: Swipe to delete or pin headlines.
+- Storage reset upon displaying all headlines from a batch and fetching new one.
 
-Now that you have successfully run the app, let's modify it.
+### Demo and APK
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+- [APK link](https://i.diawi.com/WvsJkj)
+- [Walkthrough video](https://github.com/chiragbhaiji/top-news/assets/27726339/e5c0c049-8df1-418b-a7b9-9c5b8eae9630)
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+> Screenshots
 
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+<img width="320" src="https://github.com/chiragbhaiji/top-news/assets/27726339/2fc36f71-7a66-4de3-857b-bd072fa9657c">
+<img width="320" src="https://github.com/chiragbhaiji/top-news/assets/27726339/aabc26e8-7500-4511-b45a-38561e7e7327">
+<img width="320" src="https://github.com/chiragbhaiji/top-news/assets/27726339/35ca3bf1-dacb-4541-be60-1e1867779d75">
