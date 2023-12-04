@@ -83,5 +83,10 @@ export const useArticles = (
     }, 0);
   }
 
-  return {articles, isLoading, isError, manualFetch};
+  function deleteArticle(_id) {
+    const articlesAfterDeletion = articles.filter(({id}) => _id !== id);
+    setArticles(articlesAfterDeletion);
+  }
+
+  return {articles, isLoading, isError, manualFetch, deleteArticle};
 };

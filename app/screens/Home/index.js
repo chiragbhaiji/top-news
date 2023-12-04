@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -9,11 +9,8 @@ import {
   View,
 } from 'react-native';
 
-import BackgroundFetch from 'react-native-background-fetch';
 import SwipeableFlatList from 'react-native-swipeable-list';
 
-import {store} from '../../services/Store';
-import {fetchNewsArticles} from '../../apis/fetchNewsArticles';
 import {useArticles} from '../../hooks/useArticles';
 import {ArticleListItem} from '../../components/ArticleListItem';
 import {Header} from '../../components/Header';
@@ -23,36 +20,15 @@ const deleteIcon = require('../../assets/icons/delete/delete.png');
 const pinIcon = require('../../assets/icons/pin/pin.png');
 
 const Home = () => {
-  const {articles, isLoading, isError, manualFetch} = useArticles();
+  const {articles, isLoading, isError, manualFetch, deleteArticle} =
+    useArticles();
 
-  useEffect(() => {
-    initBackgroundFetch();
-  }, []);
-
-  const initBackgroundFetch = async () => {
-    const onEvent = async taskId => {
-      // Fetch the latest news in the background and
-      // Store it for offline access
-      store.sync(fetchNewsArticles(), () => {
-        BackgroundFetch.finish(taskId);
-      });
-    };
-
-    const onTimeout = taskId => {
-      BackgroundFetch.finish(taskId);
-    };
-
-    await BackgroundFetch.configure(
-      {minimumFetchInterval: 60 * 24},
-      onEvent,
-      onTimeout,
-    );
-  };
-
-  const QuickActions = ({qaItem}) => {
+  const QuickActions = ({id}) => {
     return (
       <View style={styles.actionsContainer}>
-        <Pressable style={styles.actionContainer} onPress={() => alert('here')}>
+        <Pressable
+          style={styles.actionContainer}
+          onPress={() => deleteArticle(id)}>
           <Image style={styles.actionIconImg} source={deleteIcon} />
         </Pressable>
         <Pressable style={styles.actionContainer} onPress={() => alert('here')}>
@@ -90,7 +66,7 @@ const Home = () => {
         renderItem={({item}) => <ArticleListItem data={item} />}
         ItemSeparatorComponent={<View style={styles.spacer} />}
         showsVerticalScrollIndicator={false}
-        renderQuickActions={({item}) => <QuickActions qaItem={item} />}
+        renderQuickActions={({item}) => <QuickActions id={item.id} />}
         maxSwipeDistance={100}
       />
     </SafeAreaView>
