@@ -16,7 +16,7 @@ export const ArticleListItem = ({data}) => {
         style={styles.img}
       />
       <View style={styles.contentContainer}>
-        <Text numberOfLines={3} style={styles.title}>
+        <Text numberOfLines={2} style={styles.title}>
           {title}
         </Text>
         <Text style={styles.date}>{dateForDisplay.toDateString()}</Text>
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   img: {
     width: 120,
     borderRadius: 8,
+    resizeMode: 'cover',
   },
   footer: {
     flexDirection: 'row',

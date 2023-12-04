@@ -1,8 +1,10 @@
 import {useEffect, useMemo, useState} from 'react';
 
-import {useTimer} from './useTimer';
 import {DisplayManager} from '../services/DisplayManager';
 import {store} from '../services/Store';
+import {sortPinnedArticles} from '../utils';
+
+import {useTimer} from './useTimer';
 
 const displayManager = new DisplayManager(store);
 
@@ -67,7 +69,11 @@ export const useArticles = (
   function introduceNewArticles() {
     const {value} = articlesGenerator.next();
     if (value) {
-      setArticles(currentArticles => [...value, ...currentArticles]);
+      setArticles(currentArticles => {
+        const newArticles = [...value, ...currentArticles];
+        newArticles.sort(sortPinnedArticles);
+        return newArticles;
+      });
     } else {
       timer.stop();
       setIsLoading(true);
@@ -84,8 +90,9 @@ export const useArticles = (
   }
 
   function deleteArticle(_id) {
-    const articlesAfterDeletion = articles.filter(({id}) => _id !== id);
-    setArticles(articlesAfterDeletion);
+    setArticles(currentArticles =>
+      currentArticles.filter(({id}) => _id !== id),
+    );
   }
 
   function pinArticle(_id) {
@@ -94,11 +101,7 @@ export const useArticles = (
       isPinned: article.id === _id ? !article.isPinned : article.isPinned,
     }));
 
-    articlesAfterPinning.sort((a, b) => {
-      if (a.isPinned && b.isPinned) return 0;
-      if (a.isPinned) return -1;
-      if (b.isPinned) return 1;
-    });
+    articlesAfterPinning.sort(sortPinnedArticles);
 
     setArticles(articlesAfterPinning);
   }

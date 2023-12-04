@@ -12,3 +12,9 @@ export const randomize = array => {
     ];
   }
 };
+
+export const sortPinnedArticles = (a, b) => {
+  if (a.isPinned && b.isPinned) return 0;
+  if (a.isPinned) return -1;
+  if (b.isPinned) return 1;
+};
