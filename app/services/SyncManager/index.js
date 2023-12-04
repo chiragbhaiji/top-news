@@ -1,20 +1,19 @@
-export function SyncManager(store, fetcher) {
-  async function getData() {
-    const data = store.getArticles();
-
-    if (Array.isArray(data) && data.length > 0) {
-      return data;
+export function SyncManager(store, fetcher, onEvent) {
+  async function sync() {
+    try {
+      const data = await fetcher();
+      const storedData = store.save(data);
+      onEvent?.({
+        event: 'success',
+        data: storedData,
+      });
+    } catch (error) {
+      onEvent?.({
+        event: 'error',
+        error,
+      });
     }
-
-    return await fetchAndStore();
   }
 
-  async function fetchAndStore(page = 1) {
-    const data = await fetcher(page);
-    const storedData = store.saveArticles(data);
-
-    return storedData;
-  }
-
-  return {getData};
+  return {sync};
 }

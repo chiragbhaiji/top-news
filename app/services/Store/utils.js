@@ -2,6 +2,7 @@ import {SHA256} from 'crypto-js';
 
 export const StoreKey = {
   articles: 'articles',
+  lastSyncTimestamp: 'lastSyncTimestamp',
 };
 
 const generateIdForURL = url => {

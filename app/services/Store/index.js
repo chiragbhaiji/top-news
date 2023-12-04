@@ -1,11 +1,17 @@
 import {MMKV} from 'react-native-mmkv';
 
-import {StoreKey} from './utils';
+import {StoreKey, transformArticlesForStorage} from './utils';
+import {SyncManager} from '../SyncManager';
+import {fetchNewsArticles} from '../../apis/fetchNewsArticles';
 
 export const createMMKVStore = transformer => {
   const store = new MMKV();
 
-  const getArticles = () => {
+  const getLastSyncedTimestamp = () => {
+    return store.getNumber(StoreKey.lastSyncTimestamp) ?? null;
+  };
+
+  const get = () => {
     const articlesString = store.getString(StoreKey.articles);
     try {
       return JSON.parse(articlesString);
@@ -14,7 +20,7 @@ export const createMMKVStore = transformer => {
     }
   };
 
-  const saveArticles = articles => {
+  const save = articles => {
     let transformedData = articles;
 
     if (transformer) {
@@ -22,12 +28,22 @@ export const createMMKVStore = transformer => {
     }
 
     store.set(StoreKey.articles, JSON.stringify(transformedData));
+    store.set(StoreKey.lastSyncTimestamp, Date.now());
 
     return transformedData;
   };
 
   return {
-    getArticles,
-    saveArticles,
+    get,
+    save,
+    getLastSyncedTimestamp,
   };
+};
+
+export const createSyncManager = onEvent => {
+  return new SyncManager(
+    createMMKVStore(transformArticlesForStorage),
+    fetchNewsArticles,
+    onEvent,
+  );
 };
