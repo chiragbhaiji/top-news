@@ -14,7 +14,7 @@ import {store} from './services/Store';
 import {fetchNewsArticles} from './apis/fetchNewsArticles';
 
 const App = () => {
-  const {articles, isLoading} = useArticles();
+  const {articles, isLoading, isError} = useArticles();
 
   useEffect(() => {
     initBackgroundFetch();
@@ -50,6 +50,14 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {isError && (
+        <View style={styles.errorContainer}>
+          <Text
+            style={
+              styles.errorText
+            }>{`Something went wrong!\nUnable to fetch latest news`}</Text>
+        </View>
+      )}
       <FlatList
         data={articles}
         renderItem={({item: {id, title}, index}) => (
@@ -75,6 +83,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  errorContainer: {
+    backgroundColor: '#F88379',
+    paddingVertical: 4,
+  },
+  errorText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 

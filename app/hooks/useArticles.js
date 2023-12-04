@@ -6,6 +6,7 @@ import {store} from '../services/Store';
 
 export const useArticles = (initialCount = 10, updateCount = 5) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [articles, setArticles] = useState([]);
 
   const timer = useTimer(populateArticles, 1000);
@@ -22,6 +23,13 @@ export const useArticles = (initialCount = 10, updateCount = 5) => {
       loadInitialData();
     }
   }, [isReady]);
+
+  useEffect(() => {
+    if (isError) {
+      timer.stop();
+      setIsLoading(false);
+    }
+  }, [isError]);
 
   const loadInitialData = () => {
     timer.start();
@@ -40,9 +48,7 @@ export const useArticles = (initialCount = 10, updateCount = 5) => {
       articlesGenerator = generateArticles({initialCount, updateCount});
       loadInitialData();
     }
-    if (event === 'error') {
-      setIsLoading(false);
-    }
+    setIsError(event === 'error');
   }
 
   function populateArticles() {
@@ -52,9 +58,11 @@ export const useArticles = (initialCount = 10, updateCount = 5) => {
     } else {
       timer.stop();
       setIsLoading(true);
-      loadNextBatch();
+      if (!isError) {
+        loadNextBatch();
+      }
     }
   }
 
-  return {articles, isLoading};
+  return {articles, isLoading, isError};
 };
